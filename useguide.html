@@ -1,0 +1,343 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+	img {
+		width: 100%;
+	}
+
+	.height {
+		height: 10px;
+	}
+
+	/* Image-container design */
+	.image-container {
+		max-width: 900px;
+		position: relative;
+		margin: auto;
+	}
+
+	.next {
+		right: 0;
+	}
+
+	/* Next and previous icon design */
+	.previous,
+	.next {
+		cursor: pointer;
+		position: absolute;
+		top: 50%;
+		padding: 10px;
+		margin-top: -25px;
+	}
+
+	/* caption decorate */
+	.captionText {
+		color: #000000;
+		font-size: 14px;
+		position: absolute;
+		padding: 12px 12px;
+		bottom: 8px;
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Slider image number */
+	.slideNumber {
+		background-color: #5574C5;
+		color: white;
+		border-radius: 25px;
+		right: 0;
+		opacity: .5;
+		margin: 5px;
+		width: 30px;
+		height: 30px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 24px;
+		position: absolute;
+	}
+
+	.fa {
+		font-size: 32px;
+	}
+
+	.fa:hover {
+		transform: rotate(360deg);
+		transition: 1s;
+		color: white;
+	}
+
+	.footerdot {
+		cursor: pointer;
+		height: 8px;
+		width: 8px;
+		margin: 0 2px;
+		background-color: #a8a8a8;
+		border-radius: 50%;
+		display: inline-block;
+		transition: background-color 0.5s ease;
+	}
+
+	.footerdot.active,
+	.footerdot:hover {
+		background-color: #197DDE;
+	}
+
+	.slide {
+		width: 33%;
+		float: left;
+		margin-bottom: 0;
+		padding: 15px;
+	}
+
+	.dot,
+	.previous,
+	.next {
+		display: none;
+	}
+
+	.bnpl-area {
+		text-align: center;
+	}
+
+	.slide-title {
+		display: none;
+	}
+
+	.desc span.none {
+		color: #ee4d2d;
+		font-family: 'Montserrat Alternates';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 26px;
+		line-height: 32px;
+		margin-bottom: 14px;
+	}
+
+	.desc span.done {
+		color: #56CA8B;
+		font-family: 'Montserrat Alternates';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 26px;
+		line-height: 32px;
+		margin-bottom: 14px;
+	}
+
+	.desc {
+		display: grid;
+		width: 100%;
+		text-align: center;
+		font-family: 'Montserrat';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 20px;
+	}
+
+	.bnpl-area {
+		margin-top: 35px;
+	}
+
+	.btn.ignore {
+		display: none;
+	}
+
+	@media only screen and (max-width: 428px) {
+		.slide {
+			width: auto;
+			float: none;
+		}
+
+		.slide img {
+			width: 100%;
+			margin-bottom: 0;
+		}
+
+		.dot,
+		.previous,
+		.next {
+			display: block;
+			margin-top: 5px;
+		}
+
+		.slide-title {
+			text-align: center;
+			margin-top: 30px;
+			margin-bottom: 0;
+			max-width: 295px;
+
+		}
+
+		.desc {
+			display: grid;
+			width: 100%;
+			text-align: center;
+		}
+
+		.desc span {
+			width: 70%;
+			margin: 0 auto;
+			font-size: 16px;
+			line-height: 20px;
+		}
+
+		.desc span.none {
+			color: #ee4d2d;
+			font-size: 26px;
+			font-weight: 700;
+			font-family: 'Montserrat Alternates';
+			margin-bottom: 14px;
+		}
+
+		.desc span.done {
+			color: #56CA8B;
+			font-size: 26px;
+			font-weight: 700;
+			font-family: 'Montserrat Alternates';
+			margin-bottom: 14px;
+		}
+
+		.bnpl-area {
+			margin-top: 35px;
+		}
+
+		.ignore {
+			font-family: 'Montserrat';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 20px;
+			color: #000000;
+			background: transparent;
+		}
+
+		.btn.start {
+			display: none;
+		}
+
+		.btn.ignore {
+			display: initial;
+		}
+
+	}
+</style>
+
+<div class="title slide-title">Hướng dẫn <br />chụp ảnh chân dung</div>
+
+<div class="image-container">
+	<div class="slide">
+		<img src="./assets/img/pic1.png">
+		<div class="desc">
+			<span class="none">Không nên</span>
+			<span class="sub-title-1">Vui lòng <strong>KHÔNG đội nón, đeo kính, khẩu trang</strong></span>
+		</div>
+	</div>
+	<div class="slide">
+		<img src="./assets/img/pic2.png">
+		<div class="desc">
+			<span class="none">Không nên</span>
+			<span class="sub-title-2">Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh</span>
+		</div>
+	</div>
+	<div class="slide">
+		<img src="./assets/img/pic3.png">
+		<div class="desc">
+			<span class="done">Tốt lắm</span>
+			<span class="sub-title-3">Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn</span>
+		</div>
+	</div>
+</div>
+
+<div style="text-align:center" class="dot">
+	<span class="footerdot" onclick="activeSlide(1)">
+	</span>
+	<span class="footerdot" onclick="activeSlide(2)">
+	</span>
+	<span class="footerdot" onclick="activeSlide(3)">
+	</span>
+</div>
+
+<div class="bnpl-area">
+	<button class='payment-button btn ignore' id="lastimg">Bỏ qua ></button>
+	<button class='payment-button btn start'  id="callFaceCapture">Bắt đầu</button>
+</div>
+
+<script>
+	$("#callFaceCapture").on('click', function () {
+		runFaceCaptureScreen();
+	});
+
+	$(".ignore").on('click', function () {
+		$('.payment-button.start').css('display', 'initial');
+		$('.payment-button.ignore').css('display', 'none');
+	});
+
+	var slideIndex = 1;
+	displaySlide(slideIndex);
+
+	$('.slide').on({
+		'click': function (e) {
+			slideIndex = slideIndex + 1;
+			displaySlide(slideIndex);
+			// $(this).on('touchmove mousemove', );
+			// move(e);
+
+		},
+		'touchend mouseup': function (e) {
+			$(this).off('touchmove mousemove');
+		}
+	});
+
+	function move(e) {
+		$('.slide').css({
+			left: (e.pageX - 10) + 'px',
+			top: (e.pageY - 10) + 'px',
+			cursor: 'pointer'
+		});
+	}
+
+	function moveSlides(n) {
+		displaySlide(slideIndex += n);
+	}
+
+	function activeSlide(n) {
+		displaySlide(slideIndex = n);
+	}
+
+	var isAct = false;
+	/* Main function */
+	function displaySlide(n) {
+		var width = document.body.clientWidth;
+		if (width > 428) return;
+		var i;
+		var totalslides =
+			document.getElementsByClassName("slide");
+
+		var totaldots =
+			document.getElementsByClassName("footerdot");
+
+		if (n > totalslides.length) {
+			slideIndex = 1;
+		}
+		if (n < 1) {
+			slideIndex = totalslides.length;
+		}
+		for (i = 0; i < totalslides.length; i++) {
+			totalslides[i].style.display = "none";
+		}
+		for (i = 0; i < totaldots.length; i++) {
+			totaldots[i].className =
+				totaldots[i].className.replace(" active", "");
+		}
+		totalslides[slideIndex - 1].style.display = "block";
+		totaldots[slideIndex - 1].className += " active";
+		if (n == 3) isAct = true;
+		if (n < 3 && !isAct) {
+			$('.payment-button.start').css('display', 'none');
+		} else {
+			$('.payment-button.start').css('display', 'initial');
+			$('.payment-button.ignore').css('display', 'none');
+		}
+	}
+</script>

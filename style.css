@@ -1,0 +1,22 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* multi progress bar */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;1,400&display=swap');
+
+:root{
+    --line-border-fill: #9c27b0;
+    --line-border-empty: #bdbdbd;
+}
+
+.default-gray {
+    color: rgb(175, 175, 175) !important;
+}
+
+/* ẩn option 1 */
+option:first-of-type {
+  display: none;
+}
