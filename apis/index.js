@@ -1,5 +1,84 @@
+
+function callAjax($data, $url, $type, $token = '') {
+    options.Authorization = `Bearer ` + $token;
+    try {
+        let data = $.ajax({
+            url: `${baseURL}/` + $url,
+            method: $type,
+            data: JSON.stringify($data),
+            headers: options,
+            async: false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('body').removeClass('loading');
+            }
+        });
+        return data.responseJSON;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+};
+
+function callAjaxEAP($data, $url, $type) {
+    try {
+        let data = $.ajax({
+            url: `${baseURL_EAP}/` + $url,
+            method: $type,
+            data: JSON.stringify($data),
+            async: false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('body').removeClass('loading');
+            }
+        });
+        return data.responseJSON;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+};
+
+function callAjaxMuleSoft($data, $url, $type) {
+    try {
+        let data = $.ajax({
+            url: `${baseURL_MULESOFT}/` + $url,
+            method: $type,
+            data: $data,
+            async: false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('body').removeClass('loading');
+            }
+        });
+        return data.responseJSON;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+};
+
+
 function checkPhoneExists(phone) {
-    return callAjax({ phone: phone }, 'user/checkPhoneExists', 'POST');
+    return callAjax({ phone: phone }, 'vlos/check-status-vlos', 'POST');
 };
 
 function checkNidExists(nid) {
@@ -102,82 +181,6 @@ function requestRefreshToken(refreshToken) {
     return callAjax({ refreshToken: refreshToken }, 'user/requestRefreshToken', 'PUT');
 };
 
-function callAjax($data, $url, $type, $token = '') {
-    options.Authorization = `Bearer ` + $token;
-    try {
-        let data = $.ajax({
-            url: `${baseURL}/` + $url,
-            method: $type,
-            data: JSON.stringify($data),
-            headers: options,
-            async: false,
-            dataType: 'json',
-            beforeSend: function () {
-                $('body').addClass('loading');
-            },
-            complete: function () {
-                $('body').removeClass('loading');
-            }
-        });
-        return data.responseJSON;
-    }
-    catch (error) {
-        return {
-            errorCode: error.status || 500,
-            errorMessage: error.message
-        }
-    }
-};
-
-function callAjaxEAP($data, $url, $type) {
-    try {
-        let data = $.ajax({
-            url: `${baseURL_EAP}/` + $url,
-            method: $type,
-            data: JSON.stringify($data),
-            async: false,
-            dataType: 'json',
-            beforeSend: function () {
-                $('body').addClass('loading');
-            },
-            complete: function () {
-                $('body').removeClass('loading');
-            }
-        });
-        return data.responseJSON;
-    }
-    catch (error) {
-        return {
-            errorCode: error.status || 500,
-            errorMessage: error.message
-        }
-    }
-};
-
-function callAjaxMuleSoft($data, $url, $type) {
-    try {
-        let data = $.ajax({
-            url: `${baseURL_MULESOFT}/` + $url,
-            method: $type,
-            data: $data,
-            async: false,
-            dataType: 'json',
-            beforeSend: function () {
-                $('body').addClass('loading');
-            },
-            complete: function () {
-                $('body').removeClass('loading');
-            }
-        });
-        return data.responseJSON;
-    }
-    catch (error) {
-        return {
-            errorCode: error.status || 500,
-            errorMessage: error.message
-        }
-    }
-};
 
 // API EAP
 function getAllProviders() {
@@ -384,3 +387,102 @@ function getDistrictsByProvinceIdVlos(id) {
 function getWardsByDistrictIdVlos(id) {
     return callAjax({}, `common/getWardVLOS/${id}`, 'GET');
 };
+
+
+function callAPIDownload (data,contractID){
+    return callAjax(data, `/vlos/download-contract-vlos/20230306113630-${contractID}-pdfContract`, 'GET');
+}
+
+
+
+
+function callAPIStartEsign (applicationID){
+    return callAjax({}, `/vlos/start-esign-vlos?applicationId=${applicationID}`, 'GET');
+}
+
+
+
+function callAPIGenerateOTP (applicationID){
+    return callAjax({}, `/vlos/generate-otp-vlos?applicationId=${applicationID}`, 'GET');
+}
+
+
+
+
+
+function callAPIVerifyOTP (applicationID, otp){
+    return callAjax({}, `/vlos/verify-otp-vlos?applicationId=${applicationID}&otp=${otp}`, 'GET');
+}
+
+
+
+function callAPICancelVlos ( data,applicationID){
+    return callAjax(data, `/vlos/cancel-vlos?applicationID=${applicationID}`, 'POST');
+}
+
+
+
+
+
+
+function callAPIInquiryStatusVlos(applicationID){
+    return callAjax({}, `/vlos/inquiry-status-vlos?applicationID=${applicationID}`, 'POST');
+}
+   
+
+
+function callBackVlos(data) {
+    return callAjax(data, `/vlos/callback-vlos`, 'POST');
+}
+
+
+
+
+
+function callAPICheckFace(data) {
+    return callAjax(data, `/vlos/face-vlos`, 'POST');
+}
+
+
+function getSignContract(applicationID) {
+    return callAjax({}, `/vlos/get-esign-contract?applicationId=${applicationID}`, 'GET');
+}
+
+
+
+
+
+function checkData(data) {
+    return callAjax(data, `/common/check-data`, 'POST');
+}
+
+
+
+
+function getContract(data) {
+    return callAjax(data, `/vlos/get-contract-vlos`, 'POST');
+}
+
+
+function getCityVlos() {
+    return callAjax({}, `/common/getCityVLOS`, 'GET');
+}
+ 
+
+
+
+function getDistrictVLOS(query){
+    return callAjax({}, `/common/getDistrictVLOS/${query}`, 'GET');
+}
+
+
+function getWardVLOS(query){
+    return callAjax({}, `/common/getWardVLOS/${query}`, 'GET');
+}
+
+
+function checkAddressValid(data) {
+    return callAjax(data, `/common/checkAddressValid`, 'POST');
+}
+
+

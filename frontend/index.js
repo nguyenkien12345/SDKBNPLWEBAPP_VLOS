@@ -163,50 +163,64 @@ function showUICheckPhone(element) {
       let data = dataPhone.value;
       sessionStorage.setItem("phone", data);
       let result = checkPhoneExists(data);
-      if (result.statusCode === 1000 && result.status === true) {
-        let step = result.data.step;
+      if (result.status === true) {
+        let step = result.data.stepVlos;
         closeLoading_clearInterval(x);
-        getQrcode();
-        if (result?.dataFEC?.Business_Status === 'REGISTRATION_FAILED') {
-          messageScreen(element, { screen: "unsuccessScreen", pipeline: true });
-          return;
+        let status = result.data.status;
+        switch (step) {
+          case 1:
+
+            showUICheckNid(element);
+            break;
+          case 3:
+          case 4:
+          case 7:
+            formatStyleWrongInput(dataPhone, errorMessage, messageStepVlos(status));
+            break;
+          case 2:
+          case 5:
+          case 6:
+            showAllProvider(element, "REGISTERED_PHONE");
+            break;
         }
-        if (step === 4) {
-          showAllProvider(element, "REGISTERED_PHONE");
+      } else {
+        let statusCode = result.data.statusCode;
+        closeLoading_clearInterval(x);
+
+        if (statusCode === 1003) {
+          showUICheckNid(element);
+        } else {
+          btnSubmitPhone.disabled = true;
+          switch (statusCode) {
+            case 2222:
+              console.log("statusCode 2222 :::", statusCode);
+              // formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone);
+              break;
+            case 2223:
+              console.log("statusCode 2223 :::", statusCode);
+              // formatStyleWrongInput(dataPhone, errorMessage, "Thông tin của bạn bị từ chối đăng ký mua trước trả sau");
+              break;
+            case 2224:
+              console.log("statusCode 2224 :::", statusCode);
+              // formatStyleWrongInput(dataPhone, errorMessage, "Thông tin của bạn bị từ chối đăng ký mua trước trả sau. Vui lòng thử lại");
+              break;
+            case 2225:
+              console.log("statusCode 2225 :::", statusCode);
+              // formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_OTP_5);
+              break;
+            case 2226:
+              console.log("statusCode 2226 :::", statusCode);
+              // formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_pin_5);
+              break;
+            case 2227:
+              console.log("statusCode 2227 :::", statusCode);
+              // formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_OTP_5);
+              break;
+          }
         }
-        if (step === 3) {
-          showCircularProgressbar(element, false);
-        } else if (step === 2) {
-          showAllProvider(element, "REGISTERED_PHONE");
-        } else if (step === 0) {
-          messageScreen(element, { screen: "unsuccessScreen", pipeline: false, });
-          return;
-        }
-      } else if (result.statusCode === 1003 && result.status === false) {
-        closeLoading_clearInterval(x);
-        showUICheckNid(element);
-      } else if (result.statusCode === 8000 && result.status === false) {
-        closeLoading_clearInterval(x);
-        formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone);
-        btnSubmitPhone.disabled = true;
-      } else if (result.statusCode === 3001 && result.status === false) {
-        closeLoading_clearInterval(x);
-        formatStyleWrongInput(dataPhone, errorMessage, "Thông tin của bạn bị từ chối đăng ký mua trước trả sau");
-        btnSubmitPhone.disabled = true;
-      } else if (result.statusCode === 3002 && result.status === false) {
-        closeLoading_clearInterval(x);
-        formatStyleWrongInput(dataPhone, errorMessage, "Thông tin của bạn bị từ chối đăng ký mua trước trả sau. Vui lòng thử lại");
-        btnSubmitPhone.disabled = true;
-      } else if (result.statusCode === 1008 && result.status === false) {
-        closeLoading_clearInterval(x);
-        formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_OTP_5);
-        btnSubmitPhone.disabled = true;
-      } else if (result.statusCode === 1004 && result.status === false) {
-        closeLoading_clearInterval(x);
-        formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_pin_5);
-        btnSubmitPhone.disabled = true;
       }
-    }, 300);
+
+    }, 3000);
   });
 };
 
@@ -375,7 +389,7 @@ function captureNidFrontAndBack(element) {
   $(window).scrollTop(0);
 
   $("#btnCaptureFront").click(function () {
-    showUseGuideNid();
+      showUseGuideNid();
   });
 
   $("#btnCaptureBack").click(function () {
@@ -684,9 +698,12 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
   return HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
 };
 
+
+let hvFaceConfig = new HVFaceConfig();
+
 async function LaunchFaceCaptureScreen() {
   try {
-    let hvFaceConfig = new HVFaceConfig();
+
     hvFaceConfig.setShouldShowInstructionPage(false);
     hvFaceConfig.faceTextConfig.setFaceCaptureTitle(lang.LaunchFaceCaptureScreen.capture_selfie);
     hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription(lang.LaunchFaceCaptureScreen.use_phone);
@@ -735,7 +752,6 @@ async function LaunchDocumentCaptureScreen(side) {
     hvDocConfig.docTextConfig.setDocCaptureBottomDescription(lang.LaunchDocumentCaptureScreen.choose_place);
     $("body").removeClass("loading");
     close_popup();
-
     let applyFrontNid = side === "FRONT" && side !== "BACK" && side !== "";
     let applyBackNid = side === "BACK" && side !== "FRONT" && side !== "";
     if (applyFrontNid) {
@@ -757,7 +773,6 @@ async function LaunchDocumentCaptureScreen(side) {
         let attemptsCount = HVResponse.getAttemptsCount();
         if (apiResults["result"]["summary"]["action"] !== "pass") {
           showPopupMessage(lang.cutStringData.notification, lang.LaunchDocumentCaptureScreen.Unsatisfactory_picture, lang.showPopupMessage.button_ok);
-          return;
         }
         if (imageBase64) {
           $(".guideslide").remove();
@@ -801,8 +816,13 @@ function runFaceCaptureScreen() {
 function runDocumentCaptureScreen(side) {
   showLoading();
   try {
-    getHV().then(() => LaunchDocumentCaptureScreen(side));
+   
+    getHV().then(() => {
+      console.log("runDocumentCaptureScreen");
+      LaunchDocumentCaptureScreen(side);
+    });
   } catch (error) {
+    console.log(error);
     return {
       errorCode: error.status || 500,
       errorMessage: error.message,
@@ -899,6 +919,7 @@ function showAllProvider(element, type) {
   disableEnterKey();
   const data = getAllProviders();
   let providers = data.data;
+  console.log(providers);
   if (providers.length > 1) {
     let html = `<div class='box showAllProvider'><div class='paragraph-text text-center margin-bottom-default'><h6>${lang.showAllProvider.choose_provider}</h6></div>`;
     for (let i = 0; i < providers.length; i++) {

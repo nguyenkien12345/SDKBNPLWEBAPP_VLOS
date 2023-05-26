@@ -19,7 +19,8 @@ function showUseGuideSelfy() {
 function showUseGuideNid() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
-    $('#voolo').append("<div class='guideslide nid-front' style=''></div>");
+    
+    $('#voolo').append("<div class='guideslide nid-front'></div>");
     $('.guideslide').load('useguidenid.html', function () {
         $(".slide-title").html(lang.useguidenidhtml.guide_capture_nid);
         $(".image-container .slide .desc span.none").html(lang.useguidenidhtml.none);
